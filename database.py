@@ -62,17 +62,18 @@ Base.metadata.create_all(engine)
 
 
 # create a Session
-Session = sessionmaker(bind=engine)
-session = Session()
+"""Session = sessionmaker(bind=engine)
+session = Session()"""
 
-user = User(username = "admin", password = "password")
+engine.execute("INSERT INTO Users(username, password) VALUE (\"reuh\", \"reuh\")")
+"""user = User(username = "admin", password = "password")
 session.add(user)
 
 user = User(username = "python", password = "python")
 session.add(user)
 
 user = User(username = "jumpiness", password = "python")
-session.add(user)
+session.add(user)"""
 
 # commit the record the database
-session.commit()
+#session.commit()
