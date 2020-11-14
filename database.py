@@ -17,7 +17,7 @@ Base = declarative_base()
 
 
 # declaring base
-class Users(Base):
+class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(4294000000))
