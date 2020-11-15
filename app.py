@@ -32,7 +32,7 @@ def do_admin_login():
         session['logged_in'] = True
     else:
         flash('wrong password!')
-    return home()
+    return manga()
 
 
 @app.route("/search", methods=['POST'])
@@ -49,14 +49,25 @@ def search():
         return render_template('404.html', manga=POST_TITLE)
 
 
-@app.route("/home", methods=['POST'])
+@app.route("/home")
 def manga():
-    POST_TITLE = str(request.form['manga'])
     session = sessionmaker(bind=engine)
     s = session()
-    result = s.query(Manga).filter(Manga.title)
+    result = s.query(Manga).all()
+    strTable = "<!DOCTYPE html><html><head><meta charset=\"utf-8\"> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><title>StreamingSite</title><meta name=\"description\" content=\"\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"../static/style.css\"><link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.7.1/css/all.css\"></head><body><nav><ul><li class=\'dropdown\'><a href= \'/home\'>Manga</a><ul class=\'dropdown-menu\'><li><a href=\'#\'>Titles</a></li><li><a href=\'#\'>Rating</a></li></ul></li><li class=\"input-group\"><form method=\"post\" role=\"search\" class=\"quick-search\" action=\"/search\"><input type=\"text\" placeholder=\"Quick search\" name=\"search\" required><button class=\"btn-quick-search\" type=\"submit\"><span class=\'fas fa-search fa-fw \' aria-hidden=\'true\' ></span></button></form></li><li><ul class=\"menu-right\"><li class=\"account-setting\"><a href=\"/user-setting\">User Setting</a></li><li class=\"account-setting\"><a href=\"/logout\">Logout</a></li></ul></li></ul></nav><div class=\"wrapper-manga\">"
     for row in result:
         print(row.title)
+        title = row.title
+        print("title = " + title)
+        strRW = "<div>"+str(title)+"</div>"
+        strTable = strTable+strRW
+ 
+    strTable = strTable+"</div></body></html>"
+    hs = open("./templates/manga.html", 'w', encoding="utf-8")
+    hs.write(strTable)
+    hs.close()
+    return render_template('manga.html')
+        
 
 
 @app.route("/manga", methods=['POST'])

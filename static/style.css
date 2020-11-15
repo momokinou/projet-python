@@ -206,3 +206,15 @@
         }
 
         /*404 End*/
+
+        /*Manga Start*/
+
+        .wrapper-manga {
+            grid-column-gap: 1px;
+            grid-row-gap: 1px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-column-gap: 1px;
+          }
+
+        /*Manga End*/
