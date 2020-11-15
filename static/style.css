@@ -8,6 +8,7 @@
     /*Header end*/
 
     nav{
+        z-index: 100000;
         width: 100%;
         margin:0 auto;
         background-color: #2e3439;
@@ -123,6 +124,7 @@
 
     /*Header End*/
 
+    /*Login Start*/
         .login {
         margin: 20px auto;
         width: 300px;
@@ -189,3 +191,18 @@
         display: block;
         margin-top: 12px;
         }
+        /*Login End*/
+
+        /*404 Start*/
+        
+        .notfound-group{
+            position: relative;
+            padding-top:5%;
+        }
+
+        .notfound {
+            text-align: center;
+            color: #fff;
+        }
+
+        /*404 End*/
