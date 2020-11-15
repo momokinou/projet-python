@@ -88,7 +88,7 @@
 
     nav ul li{
         float: left;
-        width: 25%;
+        width: 33%;
         text-align: center;
         position: relative;
     }
@@ -96,8 +96,8 @@
 
     .input-group{
         
-        width: 50%;
-        float: right;
+        width: 33%;
+        float: center;
     }
 
     .input-group .form-control{
@@ -111,6 +111,15 @@
     }
 
     /*Quick Search End*/
+
+    /*Account setting*/
+
+    .account-setting{
+        width: 33%;
+        float: left;
+    }
+
+    /*Account setting*/
 
     /*Header End*/
 
