@@ -19,9 +19,10 @@
                 </ul>
             </li>
             <li class="input-group">
-                    <form method="get" role="search" class="quick-search">
-                        <input type="text" class="form-control" placeholder="Quick search" required>
-                        <button class="btn-quick-search" type="submit" id="quick_search_button" name="submit"><span class='fas fa-search fa-fw ' aria-hidden='true' ></span></button>
+                    <form method="post" role="search" class="quick-search" action="/search">
+                        <input type="text" placeholder="Quick search" name="search" required>
+                        <button class="btn-quick-search" type="submit"><span class='fas fa-search fa-fw ' aria-hidden='true' ></span></button>
+                    </form>
             </li>
             <li>
                 <ul class="menu-right">
@@ -29,7 +30,6 @@
                     <li class="account-setting"><a href="/logout">Logout</a></li>
                 </ul>
             </li>
-            </form>
            </ul>
         </nav>
     </body>

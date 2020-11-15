@@ -31,6 +31,12 @@ def do_admin_login():
         flash('wrong password!')
     return home()
 
+@app.route("/search", methods=['POST'])
+def search():
+    POST_TITLE = str(request.form['search'])
+    query = engine.execute("SELECT title FROM manga WHERE title LIKE \"manga\"")
+    
+
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
