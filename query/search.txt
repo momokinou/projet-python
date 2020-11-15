@@ -1,0 +1,1 @@
+SELECT title FROM Manga WHERE title LIKE "%%POST_TITLE%%" OR alt_title LIKE "%%POST_TITLE%%"

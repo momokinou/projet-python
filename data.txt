@@ -1,2 +1,0 @@
-USE StreamingSite;
-INSERT INTO users(username, password, email, gender, id_language) VALUES (\'vani\', '\supervani\', \'vani@gmail.fr\', \'male\', 14), (\'hamtoé\', \'jambon94\', \'hamtoé@mail.com\', \'male\', 14), (\'superuser\', \'jesuissuperuser\', \'user@user.fr\', \'unknown\', 28), (\'moi\', \'lui\', \'elle@onnesaitplus.net\', \'unknown\', 5), (\'Jacqueline\', \'monchienestblanc\', \'jacquelinevillard@hotmail.fr\', \'female\', 13);

@@ -40,34 +40,29 @@ def search():
     POST_TITLE = str(request.form['search'])
     session = sessionmaker(bind=engine)
     s = session()
-    s2 = session()
     result1 = s.query(Manga).filter(Manga.title.like("%%" + POST_TITLE + "%%"))
-    result2 = s2.query(Manga).filter(Manga.alt_title.like("%%" + POST_TITLE + "%%"))
-
+    result2 = s.query(Manga).filter(Manga.alt_title.like("%%" + POST_TITLE + "%%"))
     strTable = render_template('main.html')
+    row = ""
     for row in result1:
-        print(row.title)
-        title = row.title
-        strRW = "<div>" + str(title) + "</div>"
-        strTable = strTable + strRW
-
-    strTable = strTable + "</div></body></html>"
-    hs = open("./templates/search.html", 'w', encoding="utf-8")
-    hs.write(strTable)
-    hs.close()
-    return render_template('search.html')
-
-    for row2 in result2:
-        print(row2.title)
-        title = row2.title
-        strRW = "<div>" + str(title) + "</div>"
-        strTable = strTable + strRW
-
-    strTable = strTable + "</div></body></html>"
-    hs = open("./templates/search.html", 'w', encoding="utf-8")
-    hs.write(strTable)
-    hs.close()
-    return render_template('search.html')
+        if row:
+            title = row.title
+            strRW = "<div>" + str(title) + "</div>"
+            strTable = strTable + strRW
+    for row in result2:
+        if row:
+            
+            title = row.title
+            strRW = "<div>" + str(title) + "</div>"
+            strTable = strTable + strRW
+    if row:
+            strTable = strTable + "</div></body></html>"
+            hs = open("./templates/search.html", 'w', encoding="utf-8")
+            hs.write(strTable)
+            hs.close()
+            return render_template('search.html')
+    else: 
+        return render_template('404.html', manga = POST_TITLE)
 
 
 @app.route("/home")

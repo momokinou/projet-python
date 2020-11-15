@@ -7,8 +7,9 @@ from sqlalchemy.orm import relationship, backref
 
 # create link for connexion into db
 engine = create_engine('mysql+pymysql://root:@localhost')
-connection = engine.connect()
 
+# Drop db
+engine.execute("DROP DATABASE IF EXISTS StreamingSite")
 # Create db
 engine.execute("CREATE DATABASE IF NOT EXISTS StreamingSite CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci")
 # Select new db
@@ -95,20 +96,22 @@ Base.metadata.create_all(engine)
 
 
 # create a Session
-"""Session = sessionmaker(bind=engine)
-session = Session()"""
 
-file = open('data.txt')
+file = open('./query/use.txt', encoding="utf-8")
+use = text(file.read())
+engine.execute(use)
+file = open('./query/users.txt', encoding="utf-8")
+users = text(file.read())
+engine.execute(users)
+file = open('./query/language.txt', encoding="utf-8")
 query = text(file.read())
-result = connection.execute(query)
-"""user = User(username = "admin", password = "password")
-session.add(user)
-
-user = User(username = "python", password = "python")
-session.add(user)
-
-user = User(username = "jumpiness", password = "python")
-session.add(user)"""
+engine.execute(query)
+file = open('./query/manga.txt', encoding="utf-8")
+manga = text(file.read())
+engine.execute(manga)
+file = open('./query/chapter.txt', encoding="utf-8")
+chapter = text(file.read())
+engine.execute(chapter)
 
 # commit the record the database
 #session.commit()
