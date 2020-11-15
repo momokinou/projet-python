@@ -25,7 +25,7 @@ def do_admin_login():
     
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
+    query = s.query(User).filter(User.nickname.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
     result = query.first()
     if result:
         session['logged_in'] = True

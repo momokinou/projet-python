@@ -78,7 +78,7 @@ class Chapter(Base):
     nbr_chapter = Column(Integer)
     title = Column(String(255))
     id_manga = Column(Integer)
-    id_language = Column(Integer)
+    id_language = Column(Integer, ForeignKey(Language.id))
 
 
 def __init__(self):
