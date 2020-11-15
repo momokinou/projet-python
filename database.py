@@ -27,6 +27,7 @@ class Language(Base):
 def __init__(self):
     self.name = name
 
+
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -36,7 +37,6 @@ class User(Base):
     gender = Column(Enum('male', 'female', 'unknown'))
     id_language = Column(Integer, ForeignKey(Language.id))
     
-
 
 def __init__(self):
     self.username = username
@@ -70,6 +70,22 @@ def __init__(self):
     self.studio = studio
     self.nbr_volume = nbr_volume
     self.nbr_chap = nbr_chap
+
+
+class Chapter(Base):
+    __tablename__  ="chapter"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nbr_chapter = Column(Integer)
+    title = Column(String(255))
+    id_manga = Column(Integer)
+    id_language = Column(Integer)
+
+
+def __init__(self):
+    self.nbr_chapter = nbr_chapter
+    self.title = title
+    self.id_manga = id_manga
+    self.id_language = id_language
 
 
 # create table

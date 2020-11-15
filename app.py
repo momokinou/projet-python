@@ -9,12 +9,14 @@ engine = create_engine('mysql+pymysql://root:@localhost/StreamingSite')
 app = Flask(__name__)
 app.secret_key = os.urandom(12)
 
+
 @app.route('/')
 def home():
     if not session.get('logged_in'):
         return render_template('login.html')
     else:
         return render_template('index.html')
+
 
 @app.route('/login', methods=['POST'])
 def do_admin_login():
@@ -31,11 +33,24 @@ def do_admin_login():
         flash('wrong password!')
     return home()
 
+
 @app.route("/search", methods=['POST'])
 def search():
     POST_TITLE = str(request.form['search'])
-    query = engine.execute("SELECT title FROM manga WHERE title LIKE \"manga\"")
-    
+    query = engine.execute("SELECT title FROM manga WHERE title LIKE %\"manga\"%")
+
+
+@app.route("/home", methods=['POST'])
+def manga():
+    POST_TITLE = str(request.form['manga'])
+    query = engine.execute("SELECT title FROM manga ORDER BY asc")
+
+
+@app.route("/manga", methods=['POST'])
+def read():
+    POST_PAGE = str(request.form['manga'])
+    query = engine.execute("SELECT title FROM chapter c, INNER JOIN manga m ON c.id_manga = m.id")
+
 
 @app.route("/logout")
 def logout():
