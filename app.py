@@ -69,9 +69,6 @@ def search():
     hs.close()
     return render_template('search.html')
 
-    else:
-        return render_template('404.html', manga=POST_TITLE)
-
 
 @app.route("/home")
 def manga():
