@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS StreamingSite CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-USE 'StreamingSite';
+USE StreamingSite;
 
-CREATE TABLE mangas      (
+CREATE TABLE manga      (
                         id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
                         title LONGTEXT NOT NULL,
                         alt_title LONGTEXT,
