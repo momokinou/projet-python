@@ -14,7 +14,7 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = os.urandom(12)
 
 
-# verify if user is log or not
+# verify if user is logged or not
 @app.route('/')
 def home():
     if not session.get('logged_in'):
@@ -23,7 +23,7 @@ def home():
         return render_template('index.html')
 
 
-# function for connection if you're note connected
+# function for connection if you're not connected
 @app.route('/login', methods=['POST'])
 def do_admin_login():
     POST_USERNAME = str(request.form['username'])
