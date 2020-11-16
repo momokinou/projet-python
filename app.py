@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
 import os
-from sqlalchemy.orm import sessionmaker, create_engine
+from sqlalchemy.orm import sessionmaker
 from database import *
 
 engine = create_engine('mysql+pymysql://root:@localhost/StreamingSite')
