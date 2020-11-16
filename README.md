@@ -25,9 +25,9 @@ Otherwise, a 404 page will inform you that we don't have the manga searched.
 For example, the research "Naruto" will return you a 404 error.
 In an other hand, the research "O" will return One Piece and Solo Leveling.
 
-The "list users" button will bring you to the current users who have an account in this site.
+The "list users" button will bring you to the current users who have an account on this site.
 
-You can logout in any moment with the button "logout".
+You can logout at any moment with the button "logout".
 
 **TECHNICAL TUTORIAL :**
 
