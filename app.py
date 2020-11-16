@@ -75,7 +75,8 @@ def manga():
     strTable = render_template('main.html')
     for row in result:
         title = row.title
-        strRW = "<div>" + str(title) + "</div>"
+        alt_title = row.alt_title
+        strRW = "<div class=\"title\">" + str(title) + " - " + str(alt_title) + "</div>"
         strTable = strTable + strRW
 
     strTable = strTable + "</div></body></html>"
