@@ -72,9 +72,7 @@ def manga():
     result = s.query(Manga).all()
     strTable = render_template('main.html')
     for row in result:
-        print(row.title)
         title = row.title
-        print("title = " + title)
         strRW = "<div>" + str(title) + "</div>"
         strTable = strTable + strRW
 
@@ -82,19 +80,37 @@ def manga():
     hs = open("./templates/manga.html", 'w', encoding="utf-8")
     hs.write(strTable)
     hs.close()
-    print(strTable)
     return render_template('manga.html')
 
+@app.route("/user-setting")
+def setting():
+    session = sessionmaker(bind=engine)
+    s = session()
+    data = s.query(User).all()
+    strTable = render_template('main.html')
+    hs = open("./templates/admin.html", 'w', encoding="utf-8")
+    hs.write(strTable + "<h1>List User</h1><br>")
+    strTable = ""
+    for row in data:
+        title = row.username
+        strRW = "<div>" + str(title) + "</div>"
+        strTable = strTable + strRW
+    
+    strTable = strTable + "<div class=\"notfound-group\"><div class=\"notfound-child\">"
+    strTable = strTable + "</div></body></html>"
+    hs.write(strTable)
+    hs.close()
+    return render_template("admin.html")
 
-@app.route("/manga", methods=['POST'])
+"""
+@app.route("/manga")
 def read():
-    POST_PAGE = str(request.form['manga'])
-    query = engine.execute("SELECT title FROM chapter c, INNER JOIN manga m ON c.id_manga = m.id")
     session = sessionmaker(bind=engine)
     s = session()
     result = s.query(Chapter).filter(Manga.title.like('%ンピ%'), Manga.title.like('%ンピ%'))
     for row in result:
         print(row.title)
+    return render_template('manga.html')"""
 
 
 @app.route("/logout")
