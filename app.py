@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import Flask, flash, redirect, render_template, request, session, abort
 import os
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, create_engine
 from database import *
 
 engine = create_engine('mysql+pymysql://root:@localhost/StreamingSite')
@@ -85,6 +85,7 @@ def manga():
     hs.close()
     return render_template('manga.html')
 
+
 @app.route("/user-setting")
 def setting():
     session = sessionmaker(bind=engine)
@@ -104,16 +105,6 @@ def setting():
     hs.write(strTable)
     hs.close()
     return render_template("admin.html")
-
-"""
-@app.route("/manga")
-def read():
-    session = sessionmaker(bind=engine)
-    s = session()
-    result = s.query(Chapter).filter(Manga.title.like('%ンピ%'), Manga.title.like('%ンピ%'))
-    for row in result:
-        print(row.title)
-    return render_template('manga.html')"""
 
 
 @app.route("/logout")
