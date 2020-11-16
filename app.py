@@ -46,21 +46,24 @@ def search():
     row = ""
     for row in result1:
         if row:
+            print("result1", row.title)
             title = row.title
             strRW = "<div>" + str(title) + "</div>"
             strTable = strTable + strRW
     for row in result2:
         if row:
-            
+            print("result2", row.title)
             title = row.title
             strRW = "<div>" + str(title) + "</div>"
             strTable = strTable + strRW
     if row:
-            strTable = strTable + "</div></body></html>"
-            hs = open("./templates/search.html", 'w', encoding="utf-8")
-            hs.write(strTable)
-            hs.close()
-            return render_template('search.html')
+            if row.title:
+                print(row.title)
+                strTable = strTable + "</div></body></html>"
+                hs = open("./templates/search.html", 'w', encoding="utf-8")
+                hs.write(strTable)
+                hs.close()
+                return render_template('search.html')
     else: 
         return render_template('404.html', manga = POST_TITLE)
 
