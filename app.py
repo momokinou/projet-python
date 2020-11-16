@@ -4,13 +4,17 @@ import os
 from sqlalchemy.orm import sessionmaker
 from database import *
 
+# login to mysql
 engine = create_engine('mysql+pymysql://root:@localhost/StreamingSite')
+# engine = create_engine('mysql+pymysql://username:password@urlsite/database')
 
+# flask config
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = os.urandom(12)
 
 
+# verify if user is log or not
 @app.route('/')
 def home():
     if not session.get('logged_in'):
@@ -19,14 +23,15 @@ def home():
         return render_template('index.html')
 
 
+# function for connection if you're note connected
 @app.route('/login', methods=['POST'])
 def do_admin_login():
     POST_USERNAME = str(request.form['username'])
     POST_PASSWORD = str(request.form['password'])
-    
+
     Session = sessionmaker(bind=engine)
     s = Session()
-    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]) )
+    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
     result = query.first()
     if result:
         session['logged_in'] = True
@@ -35,6 +40,7 @@ def do_admin_login():
     return manga()
 
 
+# function for search manga, return 404 if not find
 @app.route("/search", methods=['POST'])
 def search():
     POST_TITLE = str(request.form['search'])
@@ -57,16 +63,17 @@ def search():
             strRW = "<div class=\"title\">" + str(title) + " - " + str(alt_title) + "</div>"
             strTable = strTable + strRW
     if row:
-            if row.title:
-                strTable = strTable + "</div></body></html>"
-                hs = open("./templates/search.html", 'w', encoding="utf-8")
-                hs.write(strTable)
-                hs.close()
-                return render_template('search.html')
-    else: 
-        return render_template('404.html', manga = POST_TITLE)
+        if row.title:
+            strTable = strTable + "</div></body></html>"
+            hs = open("./templates/search.html", 'w', encoding="utf-8")
+            hs.write(strTable)
+            hs.close()
+            return render_template('search.html')
+    else:
+        return render_template('404.html', manga=POST_TITLE)
 
 
+# function printing all mangas in home page
 @app.route("/home")
 def manga():
     session = sessionmaker(bind=engine)
@@ -86,6 +93,7 @@ def manga():
     return render_template('manga.html')
 
 
+# function printing all users
 @app.route("/user-setting")
 def setting():
     session = sessionmaker(bind=engine)
@@ -99,7 +107,7 @@ def setting():
         title = row.username
         strRW = "<div>" + str(title) + "</div>"
         strTable = strTable + strRW
-    
+
     strTable = strTable + "<div class=\"notfound-group\"><div class=\"notfound-child\">"
     strTable = strTable + "</div></body></html>"
     hs.write(strTable)
@@ -107,6 +115,7 @@ def setting():
     return render_template("admin.html")
 
 
+# function for logout if you're connected
 @app.route("/logout")
 def logout():
     session['logged_in'] = False

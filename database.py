@@ -20,7 +20,6 @@ Base = declarative_base()
 
 
 # declaring base
-
 class Language(Base):
     __tablename__ = "language"
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -95,8 +94,7 @@ def __init__(self):
 Base.metadata.create_all(engine)
 
 
-# create a Session
-
+# execute INSERT queries
 file = open('./query/use.txt', encoding="utf-8")
 use = text(file.read())
 engine.execute(use)
@@ -112,6 +110,3 @@ engine.execute(manga)
 file = open('./query/chapter.txt', encoding="utf-8")
 chapter = text(file.read())
 engine.execute(chapter)
-
-# commit the record the database
-#session.commit()
