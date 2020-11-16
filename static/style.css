@@ -228,7 +228,7 @@
 
         /*404 Start*/
         
-        .notfound-group{
+        .notfound-group {
             position: relative;
             padding-top:5%;
         }
@@ -248,6 +248,10 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             grid-column-gap: 1px;
-          }
+        }
+
+        .title {
+            color: #fff;
+        }
 
         /*Manga End*/

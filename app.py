@@ -46,19 +46,18 @@ def search():
     row = ""
     for row in result1:
         if row:
-            print("result1", row.title)
             title = row.title
-            strRW = "<div>" + str(title) + "</div>"
+            alt_title = row.alt_title
+            strRW = "<div class=\"title\">" + str(title) + " - " + str(alt_title) + "</div>"
             strTable = strTable + strRW
     for row in result2:
         if row:
-            print("result2", row.title)
             title = row.title
-            strRW = "<div>" + str(title) + "</div>"
+            alt_title = row.alt_title
+            strRW = "<div class=\"title\">" + str(title) + " - " + str(alt_title) + "</div>"
             strTable = strTable + strRW
     if row:
             if row.title:
-                print(row.title)
                 strTable = strTable + "</div></body></html>"
                 hs = open("./templates/search.html", 'w', encoding="utf-8")
                 hs.write(strTable)
