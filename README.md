@@ -1,5 +1,11 @@
 **FUNCTIONAL TUTORIAL :**
 
+Before everything,
+Think to first run the command: "export FLASK_APP=app.py" or if you are on Windows, via the command prompt: "set FLASK_APP=app.py" ,via PowerShell: "$env:FLASK_APP = "app.py"".
+After that, you have to have a MySQL server that is running (via WAMP for exemple).
+Initially, the username = "root" and the password = "", you can change this in app.py, line 7 "username:password@localhost".
+
+Finally, you can launch everything with: "py -m flask run"
 
 How to connect to the Streaming Site :
 Login : vani
