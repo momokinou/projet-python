@@ -120,3 +120,6 @@ def setting():
 def logout():
     session['logged_in'] = False
     return home()
+
+
+app.cli.add_command(init_db)
