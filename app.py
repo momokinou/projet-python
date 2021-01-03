@@ -34,36 +34,18 @@ def do_admin_login():
         return redirect(url_for('home'))
 
 
-# function for search manga, return 404 if not find
 @app.route("/search", methods=['POST'])
 def search():
-    POST_TITLE = str(request.form['search'])
-    s = create_session()
-    result1 = s.query(Manga).filter(Manga.title.like("%%" + POST_TITLE + "%%"))
-    result2 = s.query(Manga).filter(Manga.alt_title.like("%%" + POST_TITLE + "%%"))
-    strTable = render_template('main.html')
-    row = ""
-    for row in result1:
-        if row:
-            title = row.title
-            alt_title = row.alt_title
-            strRW = "<div class=\"title\">" + str(title) + " - " + str(alt_title) + "</div>"
-            strTable = strTable + strRW
-    for row in result2:
-        if row:
-            title = row.title
-            alt_title = row.alt_title
-            strRW = "<div class=\"title\">" + str(title) + " - " + str(alt_title) + "</div>"
-            strTable = strTable + strRW
-    if row:
-        if row.title:
-            strTable = strTable + "</div></body></html>"
-            hs = open("./templates/search.html", 'w', encoding="utf-8")
-            hs.write(strTable)
-            hs.close()
-            return render_template('search.html')
-    else:
-        return render_template('404.html', manga=POST_TITLE)
+    """Manga search page."""
+    search = request.form['search']
+    db_session = create_session()
+    mangas = (
+        db_session.query(Manga)
+        .filter(
+            Manga.title.like(f"%%{search}%%") |
+            Manga.alt_title.like(f"%%{search}%%"),
+        ).all())
+    return render_template('search.html', mangas=mangas, search=search)
 
 
 # function printing all mangas in home page
