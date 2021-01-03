@@ -1,17 +1,11 @@
-from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, abort
-import os
-from sqlalchemy.orm import sessionmaker
-from database import *
+from flask import (
+    Flask, flash, redirect, render_template, request, session, url_for)
 
-# login to mysql
-engine = create_engine('mysql+pymysql://root:@localhost/StreamingSite')
-# engine = create_engine('mysql+pymysql://username:password@urlsite/database')
+from database import Manga, User, create_session, init_db
 
-# flask config
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-app.secret_key = os.urandom(12)
+app.secret_key = 'secret_key'
 
 
 # verify if user is logged or not
@@ -23,61 +17,41 @@ def home():
         return render_template('index.html')
 
 
-# function for connection if you're not connected
 @app.route('/login', methods=['POST'])
 def do_admin_login():
-    POST_USERNAME = str(request.form['username'])
-    POST_PASSWORD = str(request.form['password'])
-
-    Session = sessionmaker(bind=engine)
-    s = Session()
-    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
-    result = query.first()
-    if result:
+    """Connection page."""
+    db_session = create_session()
+    user = (
+        db_session.query(User)
+        .filter(User.username == request.form['username'])
+        .filter(User.password == request.form['password'])
+        .first())
+    if user:
         session['logged_in'] = True
+        return redirect(url_for('manga'))
     else:
         flash('wrong password!')
-    return manga()
+        return redirect(url_for('home'))
 
 
-# function for search manga, return 404 if not find
 @app.route("/search", methods=['POST'])
 def search():
-    POST_TITLE = str(request.form['search'])
-    session = sessionmaker(bind=engine)
-    s = session()
-    result1 = s.query(Manga).filter(Manga.title.like("%%" + POST_TITLE + "%%"))
-    result2 = s.query(Manga).filter(Manga.alt_title.like("%%" + POST_TITLE + "%%"))
-    strTable = render_template('main.html')
-    row = ""
-    for row in result1:
-        if row:
-            title = row.title
-            alt_title = row.alt_title
-            strRW = "<div class=\"title\">" + str(title) + " - " + str(alt_title) + "</div>"
-            strTable = strTable + strRW
-    for row in result2:
-        if row:
-            title = row.title
-            alt_title = row.alt_title
-            strRW = "<div class=\"title\">" + str(title) + " - " + str(alt_title) + "</div>"
-            strTable = strTable + strRW
-    if row:
-        if row.title:
-            strTable = strTable + "</div></body></html>"
-            hs = open("./templates/search.html", 'w', encoding="utf-8")
-            hs.write(strTable)
-            hs.close()
-            return render_template('search.html')
-    else:
-        return render_template('404.html', manga=POST_TITLE)
+    """Manga search page."""
+    search = request.form['search']
+    db_session = create_session()
+    mangas = (
+        db_session.query(Manga)
+        .filter(
+            Manga.title.like(f"%%{search}%%") |
+            Manga.alt_title.like(f"%%{search}%%"),
+        ).all())
+    return render_template('search.html', mangas=mangas, search=search)
 
 
 # function printing all mangas in home page
 @app.route("/home")
 def manga():
-    session = sessionmaker(bind=engine)
-    s = session()
+    s = create_session()
     result = s.query(Manga).all()
     strTable = render_template('main.html')
     for row in result:
@@ -96,8 +70,7 @@ def manga():
 # function printing all users
 @app.route("/user-setting")
 def setting():
-    session = sessionmaker(bind=engine)
-    s = session()
+    s = create_session()
     data = s.query(User).all()
     strTable = render_template('main.html')
     hs = open("./templates/admin.html", 'w', encoding="utf-8")
@@ -120,3 +93,6 @@ def setting():
 def logout():
     session['logged_in'] = False
     return home()
+
+
+app.cli.add_command(init_db)

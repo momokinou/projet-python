@@ -30,4 +30,8 @@
     </ul>
     </div>
 </nav>
-<div class="wrapper-manga"><div class="title">ワンピース - One Piece</div></div></body></html>
+{% for manga in mangas %}
+  <div class="title">{{manga.title}} - {{manga.alt_title}}</div>
+{% else %}
+  <div class="notfound-group"><div class="notfound-child"><h1 class="notfound">404 {{search}} not found</h1></div></div>
+{% endfor %}

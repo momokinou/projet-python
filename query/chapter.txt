@@ -1,1 +1,0 @@
-INSERT INTO chapter(nbr_chapter, title, id_manga, id_language) VALUE (1, "Romance Dawn", 4, 11), (1, "They call him \'Straw Hat Luffy\'", 4, 11), (1, "", 5, 11), (1, "", 5, 14);
