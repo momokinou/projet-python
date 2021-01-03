@@ -1,14 +1,8 @@
-from flask import Flask
-from flask import Flask, flash, redirect, render_template, request, session, abort
 import os
-from sqlalchemy.orm import sessionmaker
-from database import *
+from flask import Flask, flash, render_template, request, session
 
-# login to mysql
-engine = create_engine('mysql+pymysql://root:@localhost/StreamingSite')
-# engine = create_engine('mysql+pymysql://username:password@urlsite/database')
+from database import Manga, User, create_session, init_db
 
-# flask config
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.secret_key = os.urandom(12)
@@ -29,8 +23,7 @@ def do_admin_login():
     POST_USERNAME = str(request.form['username'])
     POST_PASSWORD = str(request.form['password'])
 
-    Session = sessionmaker(bind=engine)
-    s = Session()
+    s = create_session()
     query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
     result = query.first()
     if result:
@@ -44,8 +37,7 @@ def do_admin_login():
 @app.route("/search", methods=['POST'])
 def search():
     POST_TITLE = str(request.form['search'])
-    session = sessionmaker(bind=engine)
-    s = session()
+    s = create_session()
     result1 = s.query(Manga).filter(Manga.title.like("%%" + POST_TITLE + "%%"))
     result2 = s.query(Manga).filter(Manga.alt_title.like("%%" + POST_TITLE + "%%"))
     strTable = render_template('main.html')
@@ -76,8 +68,7 @@ def search():
 # function printing all mangas in home page
 @app.route("/home")
 def manga():
-    session = sessionmaker(bind=engine)
-    s = session()
+    s = create_session()
     result = s.query(Manga).all()
     strTable = render_template('main.html')
     for row in result:
@@ -96,8 +87,7 @@ def manga():
 # function printing all users
 @app.route("/user-setting")
 def setting():
-    session = sessionmaker(bind=engine)
-    s = session()
+    s = create_session()
     data = s.query(User).all()
     strTable = render_template('main.html')
     hs = open("./templates/admin.html", 'w', encoding="utf-8")

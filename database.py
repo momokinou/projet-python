@@ -3,7 +3,9 @@ from flask.cli import with_appcontext
 from sqlalchemy import (
     create_engine, Column, Date, Enum, ForeignKey, Integer, String, Text)
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
+DB_URL = 'mysql+pymysql://root:@localhost'
 Base = declarative_base()
 
 
@@ -46,10 +48,16 @@ class Chapter(Base):
     id_language = Column(Integer, ForeignKey(Language.id))
 
 
+def create_session():
+    engine = create_engine(f'{DB_URL}/StreamingSite')
+    session = sessionmaker(bind=engine)
+    return session()
+
+
 @click.command("init-db")
 @with_appcontext
 def init_db():
-    engine = create_engine('mysql+pymysql://root:@localhost')
+    engine = create_engine(DB_URL)
     engine.execute("DROP DATABASE IF EXISTS StreamingSite")
     engine.execute("CREATE DATABASE IF NOT EXISTS StreamingSite")
     engine.execute("USE StreamingSite")
