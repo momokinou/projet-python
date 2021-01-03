@@ -1,11 +1,11 @@
-import os
-from flask import Flask, flash, render_template, request, session
+from flask import (
+    Flask, flash, redirect, render_template, request, session, url_for)
 
 from database import Manga, User, create_session, init_db
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-app.secret_key = os.urandom(12)
+app.secret_key = 'secret_key'
 
 
 # verify if user is logged or not
@@ -17,20 +17,21 @@ def home():
         return render_template('index.html')
 
 
-# function for connection if you're not connected
 @app.route('/login', methods=['POST'])
 def do_admin_login():
-    POST_USERNAME = str(request.form['username'])
-    POST_PASSWORD = str(request.form['password'])
-
-    s = create_session()
-    query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
-    result = query.first()
-    if result:
+    """Connection page."""
+    db_session = create_session()
+    user = (
+        db_session.query(User)
+        .filter(User.username == request.form['username'])
+        .filter(User.password == request.form['password'])
+        .first())
+    if user:
         session['logged_in'] = True
+        return redirect(url_for('manga'))
     else:
         flash('wrong password!')
-    return manga()
+        return redirect(url_for('home'))
 
 
 # function for search manga, return 404 if not find
